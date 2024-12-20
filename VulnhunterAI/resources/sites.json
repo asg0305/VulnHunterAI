@@ -1,0 +1,21 @@
+{
+    "sec_domains": [
+        "exploit-db.com",
+        "cvedetails.com",
+        "incibe.es",
+        "www.cve.org",
+        "book.hacktricks.xyz",
+        "vulmon.com"
+    ],
+    "general_domains":[
+        "github.com"
+    ],
+    "sites": [
+        "https://www.incibe.es/incibe-cert/alerta-temprana/vulnerabilidades/",
+        "https://www.cve.org/",
+        "https://www.cvedetails.com/",
+        "https://book.hacktricks.xyz/es",
+        "https://vulmon.com/searchpage"
+    ]
+}
+
