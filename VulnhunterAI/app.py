@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import argparse
 import threading
 import sys
-from VulnHunterAI import VulnHunterAI
+from Vulnhunter.execvuln.VulnHunterAI import VulnHunterAI
 from config.output.output_config import OutputConfig
 
 app = Flask(__name__)

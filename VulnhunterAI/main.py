@@ -1,7 +1,7 @@
 import argparse
 #from spiders.vuln_spider import VulnSpider
 #from summarizer.summarizer import Summarizer
-from VulnHunterAI import VulnHunterAI
+from Vulnhunter.execvuln.VulnHunterAI import VulnHunterAI
 from config.output.output_config import OutputConfig
 
 def main():

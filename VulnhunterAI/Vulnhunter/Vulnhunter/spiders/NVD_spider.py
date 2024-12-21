@@ -19,6 +19,7 @@ class NVDSpider(CrawlSpider):
     )
 
     def parse_vuln(self, response):
+        print("EJECUTA SPIDER")
         yield {
             "CVE": response.xpath('//span[@data-testid="page-header-vuln-id"]/text()').get(),
             "Description": response.xpath('//p[@data-testid="vuln-description"]/text()').get(),

@@ -6,7 +6,7 @@ from itemadapter import ItemAdapter
 class JsonWriterPipeline:
     def open_spider(self, spider):
         print("asdsfs")
-        self.file = open("/home/user/Crawler/items.jsonl", "w")
+        self.file = open("/home/user/output/Vulnhunter/items.jsonl", "w")
 
     def close_spider(self, spider):
         self.file.close()

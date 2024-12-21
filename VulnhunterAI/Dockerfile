@@ -1,20 +1,18 @@
 # Usa una imagen base oficial
 FROM python:3.9
 
-# Crea un directorio de trabajo
-WORKDIR /home
-
 # Crea un usuario no-root y establece permisos
 RUN useradd -m user
 RUN chown -R user:user /home
+
+# Crea un directorio de trabajo
+WORKDIR /home/user
 
 # Cambia al nuevo usuario
 USER user
 
 # Copia el archivo de requisitos
-COPY requirements.txt .
-
-ENV PATH="$PATH:/home/user/.local/bin"
+#COPY requirements.txt .
 
 # Instala las dependencias necesarias
 #RUN pip install -r requirements.txt

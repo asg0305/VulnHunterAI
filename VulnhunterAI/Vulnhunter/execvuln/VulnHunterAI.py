@@ -4,10 +4,11 @@ from scrapy.crawler import CrawlerRunner
 from scrapy.utils.log import configure_logging
 from scrapy.utils.project import get_project_settings
 from OnlineSearch.online_search import OnlineSearch
-from Crawler.spiders.NVD_spider import NVDSpider
+from Vulnhunter.Vulnhunter.spiders.NVD_spider import NVDSpider
 from scrapy.settings import Settings
-from Crawler import settings as my_settings
-from Crawler.pipelines import JsonWriterPipeline
+from Vulnhunter.Vulnhunter import settings as my_settings
+from Vulnhunter.Vulnhunter.pipelines import JsonWriterPipeline
+
 
 class VulnHunterAI:
     def __init__(self, sites_file):
