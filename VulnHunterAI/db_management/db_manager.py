@@ -13,8 +13,21 @@ class Neo4jManager:
 
     def get_default_output(self):
         query = """
-        MATCH (u:URL)-[r:BELONGS_TO]->(g:Group)
-        RETURN u.url AS url, g.name AS group_name
+MATCH (u:URL)
+RETURN u.url AS url, u.source AS source
+
+MATCH (u:URL)-[:LINKS_TO]->(c:CVE)
+RETURN u.url AS url, u.source AS source, c.CVE AS CVE, c.CVSSv3 AS CVSSv3, c.Description AS description
+
+MATCH (u:URL)-[:LINKS_TO]->(c:CVE)-[:LINKS_TO]->(e:Exploit)
+RETURN u.url AS url, u.source AS source, c.CVE AS CVE, c.CVSSv3 AS CVSSv3, c.Description AS description, e.url AS exploit_url
+
+MATCH (u:URL)-[:RELATED_TO]->(c:CVE)
+RETURN u.url AS url, u.source AS source, c.CVE AS CVE, c.CVSSv3 AS CVSSv3, c.Description AS description
+
+MATCH (u:URL)-[:RELATED_TO]->(c:CVE)-[:LINKS_TO]->(e:Exploit)
+RETURN u.url AS url, u.source AS source, c.CVE AS CVE, c.CVSSv3 AS CVSSv3, c.Description AS description, e.url AS exploit_url
+
         """
         with self.driver.session() as session:
             result = session.run(query)
