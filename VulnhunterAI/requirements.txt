@@ -1,9 +1,0 @@
-networkx
-twisted
-scrapy
-transformers
-torch
-requests
-googlesearch-python
-Flask==2.0.2
-requests==2.25.1

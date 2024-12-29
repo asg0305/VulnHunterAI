@@ -1,0 +1,20 @@
+.column {
+    display: inline-block;
+    width: 30%;
+    padding: 10px;
+    vertical-align: top;
+}
+
+.result-row {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.tags-container .tag {
+    display: inline-block;
+    background-color: #e0e0e0;
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 5px;
+}

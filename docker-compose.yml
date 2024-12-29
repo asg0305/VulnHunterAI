@@ -8,26 +8,36 @@ services:
       - "8050:8050"
     volumes:
       - ./frontend:/app
-      - ./VulnhunterAI/output:/app/data
-    depends_on:
-      - backend
-
-  backend:
-    build:
-      context: ./backend
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./backend:/app
+      - ./VulnHunterAI/output:/app/data
     depends_on:
       - application
+    networks:
+      - my_network
 
   application:
     build:
-      context: ./VulnhunterAI
-    container_name: vulnhunterai_container
-    volumes:
-      - ./VulnhunterAI:/home/user
+      context: ./VulnHunterAI
     ports:
-      - "5001:5001"
-   #command: pip install -r requirements.txt
+      - "5000:5000"
+    volumes:
+      - ./VulnHunterAI:/home/user
+    networks:
+      - my_network
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  neo4j:
+    build:
+      context: ./database
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - ./database:/data
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
+

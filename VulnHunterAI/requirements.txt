@@ -1,0 +1,10 @@
+Flask
+networkx
+twisted
+scrapy
+#transformers
+#torch
+requests
+googlesearch-python
+#selenium
+webdriver-manager

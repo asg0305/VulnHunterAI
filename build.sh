@@ -1,11 +1,19 @@
 #!/bin/bash
+sudo docker exec -it vulnhunterai_application_1  /bin/bash -c "rm /home/user/output/Vulnhunter/cve_finder/*"
+sudo docker exec -it vulnhunterai_application_1  /bin/bash -c "rm /home/user/output/Vulnhunter/gen_spider/*"
+sudo docker exec -it vulnhunterai_application_1  /bin/bash -c "rm /home/user/output/Vulnhunter/sec_spider/*"
+sudo docker exec -it vulnhunterai_application_1  /bin/bash -c "rm /home/user/output/OnlineSearch/secure-search/*"
+sudo docker exec -it vulnhunterai_application_1  /bin/bash -c "rm /home/user/output/OnlineSearch/general-search/*"
 sudo docker-compose down -v
 sudo docker stop $(sudo docker ps -aq)
 sudo docker rm $(sudo docker ps -aq)
 sudo docker rmi $(sudo docker images -aq)
 sudo docker-compose up -d
-sudo docker exec -it vulnhunterai_container  /bin/bash -c "pip install networkx twisted scrapy transformers torch requests googlesearch-python Flask==2.0.2 requests==2.25.1"
-sudo docker exec -it vulnhunterai_container /bin/bash -c "python -c \"from transformers import BartTokenizer, BartForConditionalGeneration; BartTokenizer.from_pretrained('facebook/bart-large-cnn', cache_dir='/home/user/SummAI_model'); BartForConditionalGeneration.from_pretrained('facebook/bart-large-cnn', cache_dir='/home/user/SummAI_model')\""
+sudo docker exec -it vulnhunterai_application_1  /bin/bash -c "pip install --upgrade pip"
+sudo docker exec -it vulnhunterai_application_1  /bin/bash -c "pip install neo4j networkx twisted scrapy requests googlesearch-python Flask requests webdriver-manager"
+sudo docker exec -it vulnhunterai_application_1  /bin/bash -c "pip install --upgrade Flask Werkzeug"
+#sudo docker exec -it vulnhunterai_application_1  /bin/bash -c "pip install networkx twisted scrapy transformers torch requests googlesearch-python Flask==2.0.2 requests==2.25.1 selenimum webdriver-manager"
+#sudo docker exec -it vulnhunterai_container /bin/bash -c "python -c \"from transformers import BartTokenizer, BartForConditionalGeneration; BartTokenizer.from_pretrained('facebook/bart-large-cnn', cache_dir='/home/user/SummAI_model'); BartForConditionalGeneration.from_pretrained('facebook/bart-large-cnn', cache_dir='/home/user/SummAI_model')\""
 #sudo docker exec -it vulnhunterai_container /bin/bash -c "python -c \"cd /home/user && scrapy Crawler\"
 
 # Construir la imagen Docker
