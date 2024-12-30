@@ -29,15 +29,16 @@ class Neo4jSecurePipeline:
     def _save_url(self, session, item):
         logging.debug(f"Processing URL: {item.get('URL')}")
 
-        # Crear nodos para los enlaces de exploits
-        for exploit_url in item.get('Exploit Links', []):
-            logging.debug(f"Creating Exploit node: {exploit_url}")
-            create_exploit_query = """
-            MERGE (exploit:Exploit {url: $exploit_url})
-            SET exploit.url = $exploit_url
-            """
-            session.run(create_exploit_query, 
-                        exploit_url=exploit_url)
+        # Verificar si hay enlaces de exploits válidos antes de crear nodos
+        if 'Exploit Links' in item and any(link.strip() for link in item['Exploit Links']):
+            for exploit_url in item['Exploit Links']:
+                if exploit_url.strip():  # Verificar que el enlace no esté vacío
+                    logging.debug(f"Creating Exploit node: {exploit_url}")
+                    create_exploit_query = """
+                    MERGE (exploit:Exploit {url: $exploit_url})
+                    SET exploit.url = $exploit_url
+                    """
+                    session.run(create_exploit_query, exploit_url=exploit_url)
 
         # Crear nodos para CVEs relacionados y enlazarlos con los exploits
         for cve_data in item.get('CVE_data', []):
@@ -54,16 +55,18 @@ class Neo4jSecurePipeline:
                         cvssv3=cve_data.get('CVSSv3', None),
                         description=cve_data.get('Description', None))
 
-            for exploit_url in item.get('Exploit Links', []):
-                link_exploit_cve_query = """
-                MATCH (cve:CVE {url: $cve_url, CVE: $cve})
-                MATCH (exploit:Exploit {url: $exploit_url})
-                MERGE (cve)-[:LINKS_TO]->(exploit)
-                """
-                session.run(link_exploit_cve_query, 
-                            exploit_url=exploit_url,
-                            cve=cve_data.get('CVE'),
-                            cve_url=cve_data.get('url', item.get('URL')))
+            if 'Exploit Links' in item and any(link.strip() for link in item['Exploit Links']):
+                for exploit_url in item['Exploit Links']:
+                    if exploit_url.strip():  # Verificar que el enlace no esté vacío
+                        link_exploit_cve_query = """
+                        MATCH (cve:CVE {url: $cve_url, CVE: $cve})
+                        MATCH (exploit:Exploit {url: $exploit_url})
+                        MERGE (cve)-[:LINKS_TO]->(exploit)
+                        """
+                        session.run(link_exploit_cve_query, 
+                                    exploit_url=exploit_url,
+                                    cve=cve_data.get('CVE'),
+                                    cve_url=cve_data.get('url', item.get('URL')))
 
         # Crear nodo para la URL original y enlazarlo con el CVE
         create_url_query = """
@@ -114,15 +117,16 @@ class Neo4jGeneralPipeline:
     def _save_url(self, session, item):
         logging.debug(f"Processing URL: {item.get('URL')}")
 
-        # Crear nodos para los enlaces de exploits
-        for exploit_url in item.get('Exploit Links', []):
-            logging.debug(f"Creating Exploit node: {exploit_url}")
-            create_exploit_query = """
-            MERGE (exploit:Exploit {url: $exploit_url})
-            SET exploit.url = $exploit_url
-            """
-            session.run(create_exploit_query, 
-                        exploit_url=exploit_url)
+        # Verificar si hay enlaces de exploits válidos antes de crear nodos
+        if 'Exploit Links' in item and any(link.strip() for link in item['Exploit Links']):
+            for exploit_url in item['Exploit Links']:
+                if exploit_url.strip():  # Verificar que el enlace no esté vacío
+                    logging.debug(f"Creating Exploit node: {exploit_url}")
+                    create_exploit_query = """
+                    MERGE (exploit:Exploit {url: $exploit_url})
+                    SET exploit.url = $exploit_url
+                    """
+                    session.run(create_exploit_query, exploit_url=exploit_url)
 
         # Crear nodos para CVEs relacionados y enlazarlos con los exploits
         for cve_data in item.get('CVE_data', []):
@@ -135,16 +139,18 @@ class Neo4jGeneralPipeline:
                         cve=cve_data.get('CVE'),
                         cve_url=cve_data.get('url', item.get('URL')))
 
-            for exploit_url in item.get('Exploit Links', []):
-                link_exploit_cve_query = """
-                MATCH (cve:CVE {url: $cve_url, CVE: $cve})
-                MATCH (exploit:Exploit {url: $exploit_url})
-                MERGE (cve)-[:LINKS_TO]->(exploit)
-                """
-                session.run(link_exploit_cve_query, 
-                            exploit_url=exploit_url,
-                            cve=cve_data.get('CVE'),
-                            cve_url=cve_data.get('url', item.get('URL')))
+            if 'Exploit Links' in item and any(link.strip() for link in item['Exploit Links']):
+                for exploit_url in item['Exploit Links']:
+                    if exploit_url.strip():  # Verificar que el enlace no esté vacío
+                        link_exploit_cve_query = """
+                        MATCH (cve:CVE {url: $cve_url, CVE: $cve})
+                        MATCH (exploit:Exploit {url: $exploit_url})
+                        MERGE (cve)-[:LINKS_TO]->(exploit)
+                        """
+                        session.run(link_exploit_cve_query, 
+                                    exploit_url=exploit_url,
+                                    cve=cve_data.get('CVE'),
+                                    cve_url=cve_data.get('url', item.get('URL')))
 
         # Crear nodo para la URL original y enlazarlo con el CVE
         create_url_query = """

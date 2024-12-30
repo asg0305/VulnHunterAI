@@ -14,7 +14,8 @@ class SECSpider(CrawlSpider):
     def __init__(self, start_urls=None, *args, **kwargs):
         if start_urls is None:
             start_urls = [
-                'https://www.incibe.es/en/incibe-cert/early-warning/vulnerabilities/cve-2009-3898', 
+                'https://www.incibe.es/en/incibe-cert/early-warning/vulnerabilities/cve-2009-3898',
+                'https://vulmon.com/vulnerabilitydetails?qid=CVE-2024-3400',
                 'https://nvd.nist.gov/products/cpe/detail/283B2C6C-5991-4C2D-B6C4-0671F3356BDF?namingFormat=2.3&orderBy=CPEURI&keyword=cpe%3A2.3%3Aa%3Af5%3Anginx&status=FINAL%2CDEPRECATED', 
                 'https://www.incibe.es/en/incibe-cert/early-warning/vulnerabilities/cve-2009-3896', 
                 'https://vulmon.com/searchpage?q=F5%20Nginx%200.1.0&sortby=byactivity', 
