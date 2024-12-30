@@ -1,28 +1,13 @@
 from flask import Blueprint, request, jsonify
 import subprocess
-#from output_config.parse_output import ParseOutput  # Importar la clase ParseOutput
-from OnlineSearch.online_search import OnlineSearch
 import json
 import os
 from db_management.db_manager import Neo4jManager
 
 main = Blueprint('main', __name__)
+neo4j_manager = Neo4jManager()
 
 def ejecutar_scrapy():
-    """
-    spider_name = "sec_spider"
-    comando = f'scrapy crawl {spider_name} -a start_urls={search_results}'
-    resultado = subprocess.run(comando, shell=True, capture_output=True, text=True, timeout=30)
-    print(f'Salida del script:\n{resultado.stdout}')
-    if resultado.stderr:
-        print(f'Error en el script:\n{resultado.stderr}')
-    spider_name = "gen_spider"
-    comando = f'scrapy crawl {spider_name} -a start_urls={search_results}'
-    resultado = subprocess.run(comando, shell=True, capture_output=True, text=True, timeout=30)
-    print(f'Salida del script:\n{resultado.stdout}')
-    if resultado.stderr:
-        print(f'Error en el script:\n{resultado.stderr}')
-    """
     spider_name = "sec_spider"
     comando = f'scrapy crawl {spider_name}'
     resultado = subprocess.run(comando, shell=True, capture_output=True, text=True)
@@ -63,40 +48,62 @@ def process_data():
         sites = config['sites']
         sec_domains = config['sec_domains']
         gen_domains = config['general_domains']
-    
-    # Fase 1: Búsqueda online
-    #online_search = OnlineSearch(sites, sec_domains, gen_domains)
-    #file_names, sec_search_results, gen_search_results = online_search.google_search(alias, keywords)
-    #search_results = sec_search_results, gen_search_results
-    #print("Resultados de la búsqueda (General, SecSites y Dominios):")
-    #print(search_results)
 
-    # Fase 2: Ejecutar scrapy
-    #urls = load_urls_from_jsonl('/home/user/output/Vulnhunter/cve_finder/cve_finder.jsonl')
-    #os.chdir("Vulnhunter")
-    #results = sec_search_results
-    #results.extend(gen_search_results)
-    #print(results)
-    #ejecutar_scrapy()
+    os.chdir("Vulnhunter")
+    ejecutar_scrapy()
     
     return jsonify({"status": "success", "processed_data": f"Procesado el servicio {service} con versión {version}"})
 
-
 @main.route('/fetch_results', methods=['GET'])
 def fetch_results():
-    """
-    content_filter = request.args.get('content_filter')
-    filter_search = request.args.get('filter_search')
-    alias = request.args.get('alias')
+    filters = request.args.to_dict()
 
-    # Crear instancia de ParseOutput
-    parser = ParseOutput('output_paths')
-    alias = "alias"
-    # Obtener resultados directamente
-    results = parser.parse(alias)
+    # Extraer parámetros de la petición
+    query_type = filters.get('query_type', 'default')
+    attribute = filters.get('attribute')
+    filter_value = filters.get('filter')
+    
+    # Asegurarse de que los parámetros no sean None
+    if not attribute or not filter_value:
+        return jsonify({'error': 'Faltan parámetros attribute o filter'}), 400
 
-    # Filtrar los resultados
-    filtered_results = [result for result in results if content_filter in result['url'] or filter_search in result['search_group'] or alias in result['url']]
-    """
+    print(attribute)
+    print(filter_value)
 
-    return jsonify({"status": "success"})
+    # Ejecutar la consulta basada en el tipo de consulta
+    if query_type == 'default':
+        result = neo4j_manager.get_filtered_default_output(attribute, filter_value)
+    elif query_type == 'CVE':
+        result = neo4j_manager.get_filtered_CVEs(attribute, filter_value)
+    elif query_type == 'exploit':
+        result = neo4j_manager.get_filtered_exploits(attribute, filter_value)
+    elif query_type == 'related_CVE':
+        result = neo4j_manager.get_filtered_related_CVEs(attribute, filter_value)
+    elif query_type == 'related_CVE_exploit':
+        result = neo4j_manager.get_filtered_related_CVEs_exploits(attribute, filter_value)
+    else:
+        result = []
+
+    return jsonify(result)
+
+
+@main.route('/get_results', methods=['GET'])
+def get_results():
+    query_type = request.args.get('query_type')
+
+    if query_type == 'default':
+        result = neo4j_manager.get_default_output()
+    elif query_type == 'CVE':
+        result = neo4j_manager.get_CVEs()
+    elif query_type == 'exploit':
+        result = neo4j_manager.get_exploits()
+    elif query_type == 'related_CVE':
+        result = neo4j_manager.get_related_CVEs()
+    elif query_type == 'related_CVE_exploit':
+        result = neo4j_manager.get_related_CVEs_exploits()
+    else:
+        result = []
+
+    return jsonify(result)
+
+

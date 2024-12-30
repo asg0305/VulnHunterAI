@@ -1,0 +1,5 @@
+DEFAULT = ['url', 'source']
+CVE = ['CVE', 'cve_url', 'CVSSv3', 'description']
+EXPLOIT = ['exploit_url']
+RELATED_CVE = ['related_CVE', 'related_cve_url', 'rellated_CVSSv3', 'related_description']
+RELATED_CVE_EXPLOIT = ['related_exploit_url']
