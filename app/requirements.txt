@@ -1,0 +1,13 @@
+Flask==2.0.1
+celery==5.2.3
+redis==3.5.3
+unicorn
+httpx
+neo4j
+networkx
+twisted
+scrapy
+requests
+googlesearch-python
+beautifulsoup4
+webdriver-manager

@@ -2,25 +2,35 @@ from dash import html, dcc
 
 attribute_filter = html.Div([
     html.H3('Filtrar por Atributos', style={'margin': '0', 'textAlign': 'center', 'padding': '10px 0'}),
-    dcc.Input(id='attributeSearch', type='text', placeholder='Buscar atributos...', style={'width': '100%', 'marginBottom': '10px'}),
+    dcc.Input(id='attributeSearch', type='text', value='', placeholder='Buscar atributos...', style={'width': '100%', 'marginBottom': '10px'}),
     html.Div([
         dcc.Checklist(
             id='attributeFilter',
             options=[
-                {'label': 'URL', 'value': 'url'},
-                {'label': 'Source', 'value': 'source'},
-                {'label': 'CVE', 'value': 'CVE'},
-                {'label': 'CVE URL', 'value': 'cve_url'},
-                {'label': 'CVSSv3', 'value': 'CVSSv3'},
-                {'label': 'Description', 'value': 'description'},
-                {'label': 'Exploit URL', 'value': 'exploit_url'},
-                {'label': 'Related CVE', 'value': 'related_CVE'},
-                {'label': 'Related CVE URL', 'value': 'related_cve_url'},
-                {'label': 'Related CVSSv3', 'value': 'related_CVSSv3'},
-                {'label': 'Related Description', 'value': 'related_description'},
-                {'label': 'Related Exploit URL', 'value': 'related_exploit_url'}
+                {'label': 'Project Alias', 'value': 'Project.alias'},
+                {'label': 'Project Num Sources', 'value': 'Project.source_num'},
+                {'label': 'Project Num CVE', 'value': 'Project.cve_num'},
+                {'label': 'Project Num Exploits', 'value': 'Project.exploit_num'},
+                {'label': 'SrvOS', 'value': 'SrvOS.srv_os'},
+                {'label': 'SrvOS Num Sources', 'value': 'SrvOS.source_num'},
+                {'label': 'SrvOS Num CVE', 'value': 'SrvOS.cve_num'},
+                {'label': 'SrvOS Num Exploits', 'value': 'SrvOS.exploit_num'},
+                {'label': 'Version', 'value': 'Version.version'},
+                {'label': 'Version Num Sources', 'value': 'Version.source_num'},
+                {'label': 'Version Num CVE', 'value': 'Version.cve_num'},
+                {'label': 'Version Num Exploits', 'value': 'Version.exploit_num'},
+                {'label': 'URL', 'value': 'URL.url'},
+                {'label': 'Source', 'value': 'URL.source'},
+                {'label': 'URL Num CVE', 'value': 'URL.num_cve'},
+                {'label': 'URL Num Exploits', 'value': 'URL.num_exploits'},
+                {'label': 'CVE URL', 'value': 'CVE.url'},
+                {'label': 'CVE', 'value': 'CVE.CVE'},
+                {'label': 'CVSSv3', 'value': 'CVE.CVSSv3'},
+                {'label': 'Description', 'value': 'CVE.description'},
+                {'label': 'CVE Num Exploits', 'value': 'CVE.num_exploits'},
+                {'label': 'Exploit URL', 'value': 'Exploit.url'}
             ],
-            value=['url', 'source'],  # Atributos predeterminados seleccionados
+            value=[],
             style={'display': 'flex', 'flexDirection': 'column', 'gap': '10px'}
         )
     ])
