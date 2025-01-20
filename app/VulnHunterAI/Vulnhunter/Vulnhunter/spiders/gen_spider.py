@@ -6,8 +6,7 @@ class GENSpider(CrawlSpider):
     name = "gen_spider"
     custom_settings = {
         'ITEM_PIPELINES': {
-            #"Vulnhunter.pipelines.duplicates_pipeline.DuplicatesPipeline": 100,
-            "Vulnhunter.pipelines.db_neo4j_pipeline.Neo4jGeneralPipeline": 200  # Asegúrate de usar el pipeline de Neo4j
+            "Vulnhunter.pipelines.db_neo4j_pipeline.Neo4jGeneralPipeline": 200
         }
     }
 

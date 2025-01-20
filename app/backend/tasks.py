@@ -3,7 +3,9 @@ import json
 from db_management.db_manager import Neo4jManager
 from db_management.db_manager import RedisManager
 from VulnHunterAI.Vulnhunter.VulnHunterProccess import VulnHunter
+#from OnlineSearch.ya_online_search import OnlineSearch
 from OnlineSearch.online_search import OnlineSearch
+from OnlineSearch.dork_generator import DorkGenerator
 from itertools import chain
 
 from celery import Celery
@@ -38,13 +40,22 @@ def execute_search_sync():
         sites = config['sites']
         sec_domains = config['sec_domains']
         gen_domains = config['general_domains']
-    online_search = OnlineSearch(sites, sec_domains, gen_domains)
-    _, urls, _ = online_search.url_search(alias, keywords, num_results=10)
-    urls = list(chain(*urls))
-    print("Found urls")
-    print(urls)
-    #urls = ['https://nvd.nist.gov/vuln/detail/CVE-2009-3896', 'https://nvd.nist.gov/vuln/detail/CVE-2022-44567']
+    dork_generator = DorkGenerator(sites, sec_domains, gen_domains)
+    sec_dorks, gen_dorks = dork_generator.generate_all(keywords)
+
+    # Beta de búsqueda online: REQUIERE DE CONFIGURACIÓN
+    online_search = OnlineSearch()
+    _, sec_urls, gen_urls = online_search.url_search(sec_dorks, gen_dorks, alias, num_results=100)
+    sec_urls = list(chain(*sec_urls))
+    gen_urls = list(chain(*gen_urls))
+    print(sec_urls)
+    
+    # URLS para POC de nginx 0.1.5
+    #urls = ['https://nvd.nist.gov/vuln/detail/CVE-2009-3896', 'https://nvd.nist.gov/vuln/detail/CVE-2022-44567', "https://nvd.nist.gov/vuln/detail/cve-2017-20005", "https://vulmon.com/vulnerabilitydetails?qid=CVE-2017-20005"]
+    
+    # Ejecución del crawling
     task = run_scrapy.apply_async(args=[alias, service, version, urls])
+    task = run_scrapy.apply_async(args=[alias, service, version, gen_urls])
     
     # Espera el resultado de la tarea de forma síncrona
     while not task.ready():

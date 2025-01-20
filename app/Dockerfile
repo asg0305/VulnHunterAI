@@ -11,15 +11,14 @@ USER user
 
 # Configura el PATH para el usuario no-root
 ENV PATH="$PATH:/home/user/.local/bin"
-ENV PYTHONPATH='${PYTHONPATH}:/home/user'
-ENV PYTHONUNBUFFERED=1
 
 # Copiar el archivo de requisitos e instalar las dependencias
 COPY requirements.txt /home/user/requirements.txt
-RUN pip install --no-cache-dir -r /home/user/requirements.txt
+COPY build.sh /home/user/build.sh
+RUN pip install -r /home/user/requirements.txt
 
-# Copiar el archivo celery_app.py
-COPY celery_app.py /home/user/celery_app.py
+ENV PYTHONPATH='${PYTHONPATH}:/home/user'
+ENV PYTHONUNBUFFERED=1
 
 EXPOSE 5000
 
@@ -28,4 +27,4 @@ ENV CELERY_BROKER_URL redis://redis:6379/0
 ENV CELERY_RESULT_BACKEND redis://redis:6379/0
 
 # Comando para iniciar celery_app.py y Celery en segundo plano
-CMD ["/bin/bash", "-c", "python /home/user/celery_app.py & cd /home/user/backend && celery -A tasks worker --loglevel=info"]
+CMD ["/bin/bash", "-c", "/home/user/build.sh"]
