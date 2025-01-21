@@ -113,11 +113,11 @@ class Neo4jManager:
         columns_query = ", ".join(columns)
     
         # Construir la parte de MATCH dinámicamente según los parámetros
-        match_clauses = [f"MATCH (p:Project {{alias: '{project_alias}'}})"]
+        match_clauses = [f"MATCH (Project:Project {{alias: '{project_alias}'}})"]
         if srv_os:
-            match_clauses.append(f"MATCH (p)<-[:LINKED_TO]-(s:SrvOS {{srv_os: '{srv_os}'}})")
+            match_clauses.append(f"MATCH (p)<-[:LINKED_TO]-(SrvOS:SrvOS {{srv_os: '{srv_os}'}})")
         if version:
-            match_clauses.append(f"MATCH (s)<-[:LINKED_TO]-(v:Version {{version: '{version}'}})")
+            match_clauses.append(f"MATCH (s)<-[:LINKED_TO]-(Version:Version {{version: '{version}'}})")
         match_clauses.append("MATCH (Version)<-[:LINKED_TO]-(URL:URL)") 
         match_clauses.append("MATCH (URL)<-[:LINKED_TO]-(CVE:CVE)") 
         match_clauses.append("MATCH (CVE)<-[:LINKED_TO]-(Exploit:Exploit)")
