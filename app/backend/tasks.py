@@ -43,19 +43,21 @@ def execute_search_sync():
     dork_generator = DorkGenerator(sites, sec_domains, gen_domains)
     sec_dorks, gen_dorks = dork_generator.generate_all(keywords)
 
-    # Beta de búsqueda online: REQUIERE DE CONFIGURACIÓN
+    # Beta de búsqueda online: EJECUTAR SI NO HA SIDO DETECTADO COMO BOT
+    """
     online_search = OnlineSearch()
     _, sec_urls, gen_urls = online_search.url_search(sec_dorks, gen_dorks, alias, num_results=100)
     sec_urls = list(chain(*sec_urls))
     gen_urls = list(chain(*gen_urls))
-    print(sec_urls)
-    
-    # URLS para POC de nginx 0.1.5
-    #urls = ['https://nvd.nist.gov/vuln/detail/CVE-2009-3896', 'https://nvd.nist.gov/vuln/detail/CVE-2022-44567', "https://nvd.nist.gov/vuln/detail/cve-2017-20005", "https://vulmon.com/vulnerabilitydetails?qid=CVE-2017-20005"]
-    
-    # Ejecución del crawling
     task = run_scrapy.apply_async(args=[alias, service, version, sec_urls])
     task = run_scrapy.apply_async(args=[alias, service, version, gen_urls])
+    """
+
+    # URLS para POC de nginx 0.1.5
+    urls = ['https://vulmon.com/vulnerabilitydetails?qid=CVE-2024-23827', 'https://vulmon.com/vulnerabilitydetails?qid=CVE-2009-3898', 'https://www.incibe.es/en/incibe-cert/early-warning/vulnerabilities/cve-2009-3896', 'https://nvd.nist.gov/vuln/detail/CVE-2009-3896']
+    
+    # Ejecución del crawling
+    task = run_scrapy.apply_async(args=[alias, service, version, urls])
     
     # Espera el resultado de la tarea de forma síncrona
     while not task.ready():
