@@ -5,12 +5,20 @@ git clone https://github.com/asg0305/VulnHunterAI
 cd VulnHunterAI
 docker-compose up -d
 ```
-![Video](./launch.mp4)
+
+https://github.com/user-attachments/assets/abc03aac-e646-49c1-8ceb-7bf8bf734385
+
+
 ### Acceso a la herramienta
 - **Panel de ejecución**: localhost:8050
-- **Base de datos Neo4j**: localhost:7687
-![Video](https://drive.google.com/file/d/1kY-4eAEAAyZkOZkQoTaeDbB62xDUhFaJ/view?usp=sharing)
-![Video](./POC.mp4)
+- **Base de datos Neo4j**: localhost:7687 (neo4j:password)
+
+
+https://github.com/user-attachments/assets/18400813-91a9-4c03-b7d5-3cc9f46edcf5
+
+
+
+
 
 ### ¿Qué es VulnHunterAI?
 
@@ -20,7 +28,7 @@ VulnHunterAI es una herramienta de búsqueda de vulnerabilidades para servicios 
 
 La primera versión de la herramienta consta de un panel principal donde el usuario introduce un alias para la búsqueda, un servicio o sistema operativo y su versión. Posteriormente, se realiza una petición al backend donde se sigue el siguiente proceso:
 1. **Generación de dorks** para una búsqueda precisa. *(Google dorking permite encontrar información específica mediante consultas avanzadas en motores de búsqueda).*
-2. **Búsqueda online** mediante la biblioteca `yagooglesearch`.
+2. **Búsqueda online** mediante la biblioteca `googlesearch` o `yagooglesearch`.
 3. **Crawling de las páginas web** con `scrapy`.
 
 Finalmente, se mostrarán los resultados al usuario mediante una tabla interactiva que permite el filtrado de contenido y atributos.
