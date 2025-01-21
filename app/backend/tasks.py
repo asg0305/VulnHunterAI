@@ -54,7 +54,7 @@ def execute_search_sync():
     #urls = ['https://nvd.nist.gov/vuln/detail/CVE-2009-3896', 'https://nvd.nist.gov/vuln/detail/CVE-2022-44567', "https://nvd.nist.gov/vuln/detail/cve-2017-20005", "https://vulmon.com/vulnerabilitydetails?qid=CVE-2017-20005"]
     
     # Ejecución del crawling
-    task = run_scrapy.apply_async(args=[alias, service, version, urls])
+    task = run_scrapy.apply_async(args=[alias, service, version, sec_urls])
     task = run_scrapy.apply_async(args=[alias, service, version, gen_urls])
     
     # Espera el resultado de la tarea de forma síncrona
