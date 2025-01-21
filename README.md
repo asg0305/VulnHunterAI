@@ -1,8 +1,15 @@
 # VULNHUNTERAI
-
+### Despliegue de la herramienta
+```bash
+git clone https://github.com/asg0305/VulnHunterAI
+cd VulnHunterAI
+docker-compose up -d
+```
+![Video](./launch.mp4)
 ### Acceso a la herramienta
 - **Panel de ejecución**: localhost:8050
 - **Base de datos Neo4j**: localhost:7687
+![Video](./POC.mp4)
 
 ### ¿Qué es VulnHunterAI?
 
